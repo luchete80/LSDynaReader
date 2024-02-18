@@ -3,14 +3,15 @@
 
 using namespace std;
 
-int main(){
-  
-  lsdynaReader reader("sphere-plate.k");
+int main(int argc, char **argv){
+  if (argc > 1){
+  cout << "Opening "<<argv[1]<<endl;
+  lsdynaReader reader(argv[1]);
   cout << "---------------" << endl;
   cout << "Node    count: " << reader.m_node.size() <<endl;
   cout << "Element count: " << reader.m_elem.size() <<endl;
   cout << "BOUNDARY_SPC_NODE count: " << reader.m_spc_nod.size()<<endl;
-  
+  }
   //TODO: 
   //READ ALL BOUNDARY_SPC_NODE instances
   // *BOUNDARY_SPC_SET

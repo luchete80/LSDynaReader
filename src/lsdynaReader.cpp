@@ -120,8 +120,9 @@ bool findSection(std::vector<string> m_line, string str, int * ini_pos, int *end
   int endpos;
   int i = 0;
   cout << "Reading "<<str<<endl;
+  cout << "Size "<<m_line.size()<<endl;
   while (!end){
-
+    cout << "i "<<i<<endl;
       if (m_line[i].find(str) != std::string::npos){
         found = true;
         cout << "Found section" << str << " at line "<<i<<endl;
@@ -145,7 +146,7 @@ bool lsdynaReader::findSection(string str, int * ini_pos, int *end_pos){
   bool end = false;
   bool found = false;
   int i = 0;
-  cout << "Reading Elements"<<endl;
+  cout << "Reading "<< str << endl;
   while (!end){
 
       if (m_line[i].find(str) != std::string::npos){
@@ -171,7 +172,7 @@ void lsdynaReader::readNodes() {
   int ini_pos, end_pos;
   int i = 0;
   findSection ("*NODE", &ini_pos, &end_pos);
-
+  cout << "Nodes at pos: "<<ini_pos <<", "<<end_pos<<endl;
 
   for (i=ini_pos;i<end_pos;i++){
     int id;
@@ -204,6 +205,30 @@ void lsdynaReader::readElementSolid() {
     nod.m_id = id;
     for (int d=0;d<nodecount;d++)
       ls_el.node.push_back(readIntField(m_line[i], 16+8*d, 8));
+      // cout << "Node "<<id <<"XYZ: "<<nod.m_x[0]<<", "<<nod.m_x[1]<<", "<<nod.m_x[2]<<endl; 
+      m_elem.push_back(ls_el);
+    
+  }
+
+}  //line
+
+void lsdynaReader::readElementSPH() {
+  bool end = false;
+  int ini_pos, end_pos;
+  int i = 0;
+  findSection ("*ELEMENT_SPH", &ini_pos, &end_pos);
+  cout << "Searching SPH Elements..."<<endl;
+  for (i=ini_pos;i<end_pos;i++){
+    int id, pid;
+    ls_element ls_el;
+    int nodecount;
+    //if (m_line[i].size()>16) nodecount = (int)((m_line[i].size()-16)/8);
+    //cout << "Elem node count "<<nodecount <<endl;
+    ls_el.id  = readIntField(m_line[i], 0, 8);
+    ls_el.pid = readIntField(m_line[i], 1, 8);
+    ls_node nod;
+    nod.m_id = id;
+      ls_el.node.push_back(readIntField(m_line[i], 0, 8));
       // cout << "Node "<<id <<"XYZ: "<<nod.m_x[0]<<", "<<nod.m_x[1]<<", "<<nod.m_x[2]<<endl; 
       m_elem.push_back(ls_el);
     
@@ -269,6 +294,7 @@ lsdynaReader::lsdynaReader(const char *fname){
   
   readNodes();
   readElementSolid();
+  readElementSPH();
   readSPCNodes();
   //CHECK FOR
 // *BOUNDARY_SPC_SET

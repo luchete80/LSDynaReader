@@ -76,6 +76,7 @@ public:
   void readNodes();
   void removeComments();
   void readElementSolid();
+  void readElementSPH();
   void readSPCNodes();
   bool findSection(std::string str, int * ini_pos, int *end_pos);
   bool readBPMNodes(); //*BOUNDARY_PRESCRIBED_MOTION_NODE
