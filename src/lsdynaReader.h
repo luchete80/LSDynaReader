@@ -16,7 +16,7 @@ double readDoubleField(std::string &str, const int &pos, const int &length);
 int    readIntField   (std::string &str, const int &pos, const int &length);
   
 struct ls_node {
-  ls_nodeconst (const int &id_, const double &x, const double &y, const double &z){
+  void ls_nodeconst (const int &id_, const double &x, const double &y, const double &z){
     m_id = id_;
     m_x[0]=x;m_x[1]=y;m_x[2]=z;
   }
