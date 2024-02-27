@@ -266,11 +266,20 @@ void lsdynaReader::readSPCNodes(){
 
 // $#     nid       dof       vad      lcid        sf       vid     death     birth
 bool readBPMNodes() {
+  bool ret = true;
   
+  
+  
+  return ret;  
 }
 
 //SET_NODE_LIST
 bool lsdynaReader::readSetNodes(){
+  bool ret = true;
+  
+  
+  
+  return ret;
   
 }
 
