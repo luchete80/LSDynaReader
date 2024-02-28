@@ -112,7 +112,7 @@ bool findSection(std::vector<string> m_line, string str, int * ini_pos, int *end
   bool found = false;
   int endpos;
   int i = 0;
-  cout << "Reading "<<str<<endl;
+  //cout << "Reading "<<str<<endl;
   cout << "Size "<<m_line.size()<<endl;
   while (!end){
     cout << "i "<<i<<endl;
@@ -139,7 +139,7 @@ bool lsdynaReader::findSection(string str, int * ini_pos, int *end_pos){
   bool end = false;
   bool found = false;
   int i = 0;
-  cout << "Reading "<< str << endl;
+  //cout << "Reading "<< str << endl;
   while (!end){
 
       if (m_line[i].find(str) != std::string::npos){
@@ -156,7 +156,8 @@ bool lsdynaReader::findSection(string str, int * ini_pos, int *end_pos){
       //cout << str <<" not found "<<endl;
     }
     i++;
-  } 
+  }
+  cout << str << " section lines: "<<m_elem_count<<endl;
   return found;
 }
 
