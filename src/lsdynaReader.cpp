@@ -120,8 +120,8 @@ bool findSection(std::vector<string> m_line, string str, int * ini_pos, int *end
         found = true;
         cout << "Found section" << str << " at line "<<i<<endl;
         *ini_pos = i+1;
-        endpos = findNextCommandLine(i,m_line) - i;
-        *end_pos = *ini_pos + endpos -1 ;
+        //*endpos = findNextCommandLine(i,m_line) - i;
+        *end_pos = findNextCommandLine(i,m_line)-1;
         cout << "Section length: "<<endpos<<endl;
         end = true;
       }
@@ -146,8 +146,8 @@ bool lsdynaReader::findSection(string str, int * ini_pos, int *end_pos){
         found = true;
         cout << "Found section" << str << " at line "<<i<<endl;
         *ini_pos = i+1;
-        m_elem_count = findNextCommandLine(i,m_line) - i;
-        *end_pos = *ini_pos + m_elem_count -1 ;
+        *end_pos = findNextCommandLine(i,m_line) - 1;
+        m_elem_count = *end_pos -*ini_pos +1 ;
         cout << "Section length: "<<m_elem_count<<endl;
         end = true;
       }
@@ -194,8 +194,7 @@ void lsdynaReader::readElementSolid() {
     // cout << "Elem node count "<<nodecount <<endl;
     ls_el.id  = readIntField(m_line[i], 0, 8);
     ls_el.pid = readIntField(m_line[i], 1, 8);
-    ls_node nod;
-    nod.m_id = id;
+    
     for (int d=0;d<nodecount;d++)
       ls_el.node.push_back(readIntField(m_line[i], 16+8*d, 8));
       // cout << "Node "<<id <<"XYZ: "<<nod.m_x[0]<<", "<<nod.m_x[1]<<", "<<nod.m_x[2]<<endl; 
@@ -219,8 +218,7 @@ void lsdynaReader::readElementSPH() {
     //cout << "Elem node count "<<nodecount <<endl;
     ls_el.id  = readIntField(m_line[i], 0, 8);
     ls_el.pid = readIntField(m_line[i], 1, 8);
-    ls_node nod;
-    nod.m_id = id;
+
       ls_el.node.push_back(readIntField(m_line[i], 0, 8));
       // cout << "Node "<<id <<"XYZ: "<<nod.m_x[0]<<", "<<nod.m_x[1]<<", "<<nod.m_x[2]<<endl; 
       m_elem.push_back(ls_el);
