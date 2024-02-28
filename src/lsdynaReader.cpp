@@ -59,22 +59,15 @@ void removeComments(std::vector <string> m_line){
   }
 }
 
-void lsdynaReader::removeComments(){
-  std::vector<std::string>::iterator it;
-  int i=0;
-  for (it = m_line.begin();it!=m_line.end();){
-    //cout << *it<<endl;
-    string first = it->substr(0,1);
-    //cout << first <<endl;
-    if (first=="$"){
-      m_line.erase(it);
-      m_line_count--;
-    } else {
-      it ++;
-      //cout << "NOT $ FOUND "<<first<<", LIN: "<<*it<<endl;
-    }
-    //i++;
-  }
+// Función para eliminar los elementos del vector que contengan cierto caracter en la primera posición
+void lsdynaReader::removeComments(/*std::vector<std::string>& vec, char caracter*/) {
+    char caracter = '$';
+    // Usamos la función erase-remove idiom para eliminar los elementos que cumplan con la condición
+    m_line.erase(std::remove_if(m_line.begin(), m_line.end(), [caracter](const std::string& str) {
+        return !str.empty() && str[0] == '$';
+    }), m_line.end());
+    
+    m_line_count = m_line.size();
 }
 
 string removeSpaces(string str) { 
@@ -298,13 +291,14 @@ lsdynaReader::lsdynaReader(const char *fname){
         file.close();
   cout << "Line count: "<< m_line_count << endl;
   
+  //removeComments();
   removeComments();
   cout << "Line count w/o comments: "<< m_line_count << endl;
   
-  readNodes();
-  readElementSolid();
-  readElementSPH();
-  readSPCNodes();
+  // readNodes();
+  // readElementSolid();
+  // readElementSPH();
+  // readSPCNodes();
   //CHECK FOR
 // *BOUNDARY_SPC_SET
 // $#    nsid       cid      dofx      dofy      dofz     dofrx     dofry     dofrz
