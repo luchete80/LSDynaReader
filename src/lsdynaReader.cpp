@@ -73,7 +73,7 @@ void lsdynaReader::removeComments(){
       it ++;
       //cout << "NOT $ FOUND "<<first<<", LIN: "<<*it<<endl;
     }
-    i++;
+    //i++;
   }
 }
 
@@ -160,7 +160,7 @@ bool lsdynaReader::findSection(string str, int * ini_pos, int *end_pos){
       }
     if (i==m_line_count) {
       end = true;
-      cout << "ELEMENT not defined "<<endl;
+      //cout << str <<" not found "<<endl;
     }
     i++;
   } 
@@ -244,24 +244,24 @@ void lsdynaReader::readSPCNodes(){
   int ini_pos, end_pos;
   int i = 0;
   cout << "Searching Boundary SPC"<<endl;
-  findSection ("*BOUNDARY_SPC_NODE", &ini_pos, &end_pos);
+  if (findSection ("*BOUNDARY_SPC_NODE", &ini_pos, &end_pos)) {
   
-  int k = 0;
-  for (i=ini_pos;i<end_pos;i++){
-    int id, cid;
-    ls_spc_node ls_nspc;
-    // cout << "Elem node count "<<nodecount <<endl;
-    ls_nspc.m_node_id  = readIntField(m_line[i], 0, 10);
-    //cout << "m_node "<<ls_nspc.m_node_id<<endl;
-    // ls_el.cid = readIntField(m_line[i], 1, 8);
-    
-    for (int d=0;d<6;d++)
-      ls_nspc.m_fix_dof[d] = readIntField(m_line[i], 20+10*d, 10);
-      // cout << "Node "<<id <<"XYZ: "<<nod.m_x[0]<<", "<<nod.m_x[1]<<", "<<nod.m_x[2]<<endl; 
-    //cout << "spc: "<<k<<endl; k++;
-    m_spc_nod.push_back(ls_nspc);    
+    int k = 0;
+    for (i=ini_pos;i<end_pos;i++){
+      int id, cid;
+      ls_spc_node ls_nspc;
+      // cout << "Elem node count "<<nodecount <<endl;
+      ls_nspc.m_node_id  = readIntField(m_line[i], 0, 10);
+      //cout << "m_node "<<ls_nspc.m_node_id<<endl;
+      // ls_el.cid = readIntField(m_line[i], 1, 8);
+      
+      for (int d=0;d<6;d++)
+        ls_nspc.m_fix_dof[d] = readIntField(m_line[i], 20+10*d, 10);
+        // cout << "Node "<<id <<"XYZ: "<<nod.m_x[0]<<", "<<nod.m_x[1]<<", "<<nod.m_x[2]<<endl; 
+      //cout << "spc: "<<k<<endl; k++;
+      m_spc_nod.push_back(ls_nspc);    
+    }
   }
-  
 }
 
 // $#     nid       dof       vad      lcid        sf       vid     death     birth
