@@ -295,10 +295,10 @@ lsdynaReader::lsdynaReader(const char *fname){
   removeComments();
   cout << "Line count w/o comments: "<< m_line_count << endl;
   
-  // readNodes();
-  // readElementSolid();
-  // readElementSPH();
-  // readSPCNodes();
+  readNodes();
+  readElementSolid();
+  readElementSPH();
+  readSPCNodes();
   //CHECK FOR
 // *BOUNDARY_SPC_SET
 // $#    nsid       cid      dofx      dofy      dofz     dofrx     dofry     dofrz
