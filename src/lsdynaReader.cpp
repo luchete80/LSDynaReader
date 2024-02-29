@@ -167,25 +167,42 @@ void lsdynaReader::readNodes() {
   int i = 0;
   findSection ("*NODE", &ini_pos, &end_pos);
   cout << "Nodes at pos: "<<ini_pos <<", "<<end_pos<<endl;
-
+  int npos=0;
+  
   for (i=ini_pos;i<end_pos;i++){
     int id;
-    id = readDoubleField(m_line[i], 0, 8);
+    id = readIntField(m_line[i], 0, 8);
     ls_node nod;
     nod.m_id = id;
     for (int d=0;d<3;d++)
       nod.m_x[d] = readDoubleField(m_line[i], 8+16*d, 16);
-      // cout << "Node "<<id <<"XYZ: "<<nod.m_x[0]<<", "<<nod.m_x[1]<<", "<<nod.m_x[2]<<endl;    
+    
+    //cout << "Node "<<id <<", npos: "<<npos<<", XYZ: "<<nod.m_x[0]<<", "<<nod.m_x[1]<<", "<<nod.m_x[2]<<endl;    
     m_node.push_back(nod);
+    m_node_map.insert(pair<int, int>(id, npos));
+    npos++;
   }
+  
+  // map<int, int>::iterator it=m_node_map.begin();
+  // for (int n=0;n<npos;n++){
+    // cout << "Node "<< it->first<<", id pos w/map: "<<it->second<<", id from class var"<< m_node[n].m_id<<endl;
+    // it++;
+  // }
 
 }  //line
+
+int lsdynaReader::getNodePos(const int &n){
+
+    if (n<m_node.size())
+      return m_node_map[m_node[n].m_id];
+  
+}
 
 void lsdynaReader::readElementSolid() {
   bool end = false;
   int ini_pos, end_pos;
   int i = 0;
-  findSection ("*ELEMENT_SOLID", &ini_pos, &end_pos);
+  if (findSection ("*ELEMENT_SOLID", &ini_pos, &end_pos)){
   
   for (i=ini_pos;i<end_pos;i++){
     int id, pid;
@@ -202,7 +219,7 @@ void lsdynaReader::readElementSolid() {
       m_elem.push_back(ls_el);
     
   }
-
+  }
 }  //line
 
 void lsdynaReader::readElementSPH() {
@@ -216,13 +233,14 @@ void lsdynaReader::readElementSPH() {
     ls_element ls_el;
     int nodecount;
     //if (m_line[i].size()>16) nodecount = (int)((m_line[i].size()-16)/8);
-    //cout << "Elem node count "<<nodecount <<endl;
-    ls_el.id  = readIntField(m_line[i], 0, 8);
-    ls_el.pid = readIntField(m_line[i], 1, 8);
+    cout << "Elem node pos "<<m_node_map[readIntField(m_line[i], 0, 8)] <<endl;
+    ls_el.node.push_back(m_node_map[readIntField(m_line[i], 0, 8)]);
+    ls_el.pid  = readIntField(m_line[i], 8, 8);
+    ls_el.mass = readDoubleField(m_line[i], 16, 16);
+    
 
-      ls_el.node.push_back(readIntField(m_line[i], 0, 8));
-      // cout << "Node "<<id <<"XYZ: "<<nod.m_x[0]<<", "<<nod.m_x[1]<<", "<<nod.m_x[2]<<endl; 
-      m_elem.push_back(ls_el);
+    // cout << "Node "<<id <<"XYZ: "<<nod.m_x[0]<<", "<<nod.m_x[1]<<", "<<nod.m_x[2]<<endl; 
+    m_elem.push_back(ls_el);
     
   }
 
@@ -275,6 +293,19 @@ bool lsdynaReader::readSetNodes(){
   
 }
 
+void lsdynaReader::readCommands(){
+  
+  for (int i=0;i<m_line.size();i++){
+      if (m_line[i].substr(0,1)=="*"){
+        m_command_line.insert(i);
+        m_command.push_back(m_line[i]);
+      }
+    }
+  cout<< "Command count: "<<m_command.size()<<endl;
+}
+
+
+///// TODO: REMOVE SEARCH EACH COMMAND
 lsdynaReader::lsdynaReader(const char *fname){
   string line;
   m_line_count = 0;
@@ -293,11 +324,13 @@ lsdynaReader::lsdynaReader(const char *fname){
   //removeComments();
   removeComments();
   cout << "Line count w/o comments: "<< m_line_count << endl;
-  
+  readCommands();
   readNodes();
   readElementSolid();
   readElementSPH();
   readSPCNodes();
+  cout << "SPH node 1 pos"<<m_elem[0].node[0]/*<<", ID"<<m_node[m_elem[0].node[0]].m_id*/<<endl;
+  cout << "SPH node id 1 pos w/map: " <<m_node_map[m_elem[0].node[0]]<<endl;
   //CHECK FOR
 // *BOUNDARY_SPC_SET
 // $#    nsid       cid      dofx      dofy      dofz     dofrx     dofry     dofrz

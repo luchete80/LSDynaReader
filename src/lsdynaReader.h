@@ -3,6 +3,8 @@
 
 #include <string>
 #include <vector>
+#include <set>
+#include <map>
 
 class Keyword {
 public:
@@ -27,7 +29,8 @@ struct ls_node {
 struct ls_element {
   int id;
   int pid;  //Part
-  std::vector <int> node;
+  double mass;
+  std::vector <int> node; /////// THIS IS THE ------POSITION--------
 };
 
 struct ls_set_node {
@@ -74,6 +77,7 @@ public:
   int m_elem_count;
   std::vector <std::string> m_line;
   void readNodes();
+  void readCommands();
   void removeComments();
   void readElementSolid();
   void readElementSPH();
@@ -81,10 +85,18 @@ public:
   bool findSection(std::string str, int * ini_pos, int *end_pos);
   bool readBPMNodes(); //*BOUNDARY_PRESCRIBED_MOTION_NODE
   bool readSetNodes();
+
+  int getNodePos(const int &n);  
+
   std::vector < ls_node    > m_node;
   std::vector < ls_element > m_elem;
   std::vector < ls_spc_node > m_spc_nod;
   std::vector < ls_set_node > m_set_nod;
+
+  //WOULD BE FASTER A PAIR??
+  std::set<int>     m_command_line;
+  std::vector<std::string>  m_command;
+  std::map<int, int> m_node_map;
 };
 
 
