@@ -277,7 +277,7 @@ void lsdynaReader::readSPCNodes(){
 }
 
 ls_node & lsdynaReader::getElemNode(const int &e, const int &n){
-  return m_node[ls_el.node[n]];
+  return m_node[m_elem[e].node[n]];
 }
 
 // $#     nid       dof       vad      lcid        sf       vid     death     birth
