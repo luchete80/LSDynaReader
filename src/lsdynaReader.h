@@ -73,12 +73,17 @@ void readSPCNodes(int *sections, int **node_ids, bool **dofs);
 
 class lsdynaReader{
 public:  
-  lsdynaReader(){}
+  lsdynaReader(){
+    m_elem_count_type.push_back(10);
+  }
   lsdynaReader(const char *);
 
   int m_line_count;
   int m_node_count;
   int m_elem_count;
+
+  std::vector<int> m_elem_count_type;
+  
   std::vector <std::string> m_line;
   void readNodes();
   void readCommands();
@@ -97,6 +102,8 @@ public:
   std::vector < ls_element > m_elem;
   std::vector < ls_spc_node > m_spc_nod;
   std::vector < ls_set_node > m_set_nod;
+  
+
 
   //WOULD BE FASTER A PAIR??
   std::set<int>     m_command_line;

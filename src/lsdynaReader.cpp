@@ -244,6 +244,7 @@ void lsdynaReader::readElementSPH() {
     ls_el.pid  = readIntField(m_line[i], 8, 8);
     ls_el.mass = readDoubleField(m_line[i], 16, 16);
     ls_el.m_type = _SPH_;
+    m_elem_count_type[_SPH_]++;
 
     // cout << "Node "<<id <<"XYZ: "<<nod.m_x[0]<<", "<<nod.m_x[1]<<", "<<nod.m_x[2]<<endl; 
     m_elem.push_back(ls_el);
@@ -317,6 +318,7 @@ void lsdynaReader::readCommands(){
 
 ///// TODO: REMOVE SEARCH EACH COMMAND
 lsdynaReader::lsdynaReader(const char *fname){
+  m_elem_count_type.resize(10);
   string line;
   m_line_count = 0;
   int start, end;
