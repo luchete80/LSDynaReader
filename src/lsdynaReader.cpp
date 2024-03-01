@@ -171,7 +171,7 @@ void lsdynaReader::readNodes() {
   cout << "Nodes at pos: "<<ini_pos <<", "<<end_pos<<endl;
   int npos=0;
   
-  for (i=ini_pos;i<end_pos;i++){
+  for (i=ini_pos;i<end_pos+1;i++){
     int id;
     id = readIntField(m_line[i], 0, 8);
     ls_node nod;
@@ -179,7 +179,7 @@ void lsdynaReader::readNodes() {
     for (int d=0;d<3;d++)
       nod.m_x[d] = readDoubleField(m_line[i], 8+16*d, 16);
     
-    //cout << "Node "<<id <<", npos: "<<npos<<", XYZ: "<<nod.m_x[0]<<", "<<nod.m_x[1]<<", "<<nod.m_x[2]<<endl;    
+    if (i>end_pos-2)cout << "Node id"<<id <<", npos: "<<npos<<", XYZ: "<<nod.m_x[0]<<", "<<nod.m_x[1]<<", "<<nod.m_x[2]<<endl;    
     m_node.push_back(nod);
     m_node_map.insert(pair<int, int>(id, npos));
     npos++;
@@ -206,7 +206,7 @@ void lsdynaReader::readElementSolid() {
   int i = 0;
   if (findSection ("*ELEMENT_SOLID", &ini_pos, &end_pos)){
   
-  for (i=ini_pos;i<end_pos;i++){
+  for (i=ini_pos;i<end_pos+1;i++){
     int id, pid;
     ls_element ls_el;
     int nodecount;
@@ -230,12 +230,12 @@ void lsdynaReader::readElementSPH() {
   int i = 0;
   findSection ("*ELEMENT_SPH", &ini_pos, &end_pos);
   cout << "Searching SPH Elements..."<<endl;
-  for (i=ini_pos;i<end_pos;i++){
+  for (i=ini_pos;i<end_pos+1;i++){
     int id, pid;
     ls_element ls_el;
     int nodecount;
     //if (m_line[i].size()>16) nodecount = (int)((m_line[i].size()-16)/8);
-    cout << "Elem node pos "<<m_node_map[readIntField(m_line[i], 0, 8)] <<endl;
+    //cout << "Elem node pos "<<m_node_map[readIntField(m_line[i], 0, 8)] <<endl;
     ls_el.node.push_back(m_node_map[readIntField(m_line[i], 0, 8)]);
     ls_el.pid  = readIntField(m_line[i], 8, 8);
     ls_el.mass = readDoubleField(m_line[i], 16, 16);
@@ -259,7 +259,7 @@ void lsdynaReader::readSPCNodes(){
   if (findSection ("*BOUNDARY_SPC_NODE", &ini_pos, &end_pos)) {
   
     int k = 0;
-    for (i=ini_pos;i<end_pos;i++){
+    for (i=ini_pos;i<end_pos+1;i++){
       int id, cid;
       ls_spc_node ls_nspc;
       // cout << "Elem node count "<<nodecount <<endl;
