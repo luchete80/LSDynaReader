@@ -90,7 +90,8 @@ public:
   bool readBPMNodes(); //*BOUNDARY_PRESCRIBED_MOTION_NODE
   bool readSetNodes();
 
-  int getNodePos(const int &n);  
+  int getNodePos(const int &n);
+  ls_node & getElemNode(const int &e, const int &n);
 
   std::vector < ls_node    > m_node;
   std::vector < ls_element > m_elem;
