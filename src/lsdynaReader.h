@@ -6,6 +6,8 @@
 #include <set>
 #include <map>
 
+namespace LS_Dyna {
+
 class Keyword {
 public:
 };
@@ -13,7 +15,7 @@ public:
 #define FLOAT_FIELD   0
 #define INT_FIELD     1
 
-enum elem_type {Solid=0, Shell, SPH};
+enum elem_type {_Solid_=0, _Shell_, _SPH_};
 
 double readDoubleField(std::string &str, const int &pos, const int &length);
 int    readIntField   (std::string &str, const int &pos, const int &length);
@@ -99,6 +101,8 @@ public:
   std::set<int>     m_command_line;
   std::vector<std::string>  m_command;
   std::map<int, int> m_node_map;
+};
+
 };
 
 
