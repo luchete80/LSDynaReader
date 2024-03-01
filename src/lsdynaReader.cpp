@@ -237,7 +237,7 @@ void lsdynaReader::readElementSPH() {
     ls_el.node.push_back(m_node_map[readIntField(m_line[i], 0, 8)]);
     ls_el.pid  = readIntField(m_line[i], 8, 8);
     ls_el.mass = readDoubleField(m_line[i], 16, 16);
-    ls_type = SPH;
+    ls_el.m_type = SPH;
 
     // cout << "Node "<<id <<"XYZ: "<<nod.m_x[0]<<", "<<nod.m_x[1]<<", "<<nod.m_x[2]<<endl; 
     m_elem.push_back(ls_el);
