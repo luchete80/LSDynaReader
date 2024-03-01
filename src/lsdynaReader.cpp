@@ -153,7 +153,7 @@ bool lsdynaReader::findSection(string str, int * ini_pos, int *end_pos){
         cout << "Section length: "<<m_elem_count<<endl;
         end = true;
       }
-    if (i==m_line_count) {
+    if (i==m_line_count-1) {
       end = true;
       //cout << str <<" not found "<<endl;
     }
@@ -179,12 +179,16 @@ void lsdynaReader::readNodes() {
     for (int d=0;d<3;d++)
       nod.m_x[d] = readDoubleField(m_line[i], 8+16*d, 16);
     
-    if (i>end_pos-2)cout << "Node id"<<id <<", npos: "<<npos<<", XYZ: "<<nod.m_x[0]<<", "<<nod.m_x[1]<<", "<<nod.m_x[2]<<endl;    
+    if (i>end_pos-2){
+      cout << "Node id"<<id <<", npos: "<<npos<<", XYZ: "<<nod.m_x[0]<<", "<<nod.m_x[1]<<", "<<nod.m_x[2]<<endl;
+      cout << "pos "<<i<<", "<<"end_pos"<<end_pos<<endl;
+    }      
     m_node.push_back(nod);
     m_node_map.insert(pair<int, int>(id, npos));
+    
     npos++;
   }
-  
+  cout << "Node reading done."<<endl;  
   // map<int, int>::iterator it=m_node_map.begin();
   // for (int n=0;n<npos;n++){
     // cout << "Node "<< it->first<<", id pos w/map: "<<it->second<<", id from class var"<< m_node[n].m_id<<endl;
@@ -331,7 +335,11 @@ lsdynaReader::lsdynaReader(const char *fname){
   removeComments();
   cout << "Line count w/o comments: "<< m_line_count << endl;
   readCommands();
+  // for (int c=0;c<m_command.size();c++){
+    // if ()
+  // }
   readNodes();
+  cout << "Read elements"<<endl;
   readElementSolid();
   readElementSPH();
   readSPCNodes();
