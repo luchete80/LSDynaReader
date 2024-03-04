@@ -324,7 +324,7 @@ bool lsdynaReader::readSetNodes(){
             //cout << "str "<<m_line[i]<<endl;
             int nodeid = readIntField(m_line[i], 10*n, 10);
             set.node.push_back(m_node_map[nodeid]);
-            cout << "id" << nodeid<<", pos "<< m_node_map[nodeid]<<endl;
+            //cout << "id" << nodeid<<", pos "<< m_node_map[nodeid]<<endl;
           }
         }
         
