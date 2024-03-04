@@ -318,12 +318,16 @@ bool lsdynaReader::readSetNodes(){
       nodecount = 0;
       for(int i=*it+3;i< *(std::next(it));i++) {
         if (m_line[i].size()>0) {
-          ncl = (int)(m_line[i].size()/10);
-          for (int n=0;n<ncl;n++){
+          int nmax = (int)(m_line[i].size()/10);
+          ncl = 0;
+          for (int n=0;n<nmax;n++){
             //cout <<"ncl: "<<ncl<<endl;
             //cout << "str "<<m_line[i]<<endl;
             int nodeid = readIntField(m_line[i], 10*n, 10);
-            set.node.push_back(m_node_map[nodeid]);
+            if (nodeid!=0){
+              set.node.push_back(m_node_map[nodeid]);
+              ncl++;
+            }
             //cout << "id" << nodeid<<", pos "<< m_node_map[nodeid]<<endl;
           }
         }
