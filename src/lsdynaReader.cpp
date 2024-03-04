@@ -294,10 +294,47 @@ bool readBPMNodes() {
   return ret;  
 }
 
-//SET_NODE_LIST
+// *SET_NODE_LIST_TITLE
+// NODESET(SPC) 1
+// $#     sid       da1       da2       da3       da4    solver       its         -
+         // 1       0.0       0.0       0.0       0.0          1                  
+// $#    nid1      nid2      nid3      nid4      nid5      nid6      nid7      nid8
 bool lsdynaReader::readSetNodes(){
   bool ret = true;
+  auto it = m_command_line.begin();
   
+  for (int c=0;c<m_command_line.size()-1;c++){ //*END IS NOT COUNTED
+    if (m_command[c].find("*SET_NODE_LIST_TITLE")!=string::npos){
+      cout << "Node Set Found, command "<<c<<", line: "<<*it<<endl;
+      cout << "End line "<<*(std::next(it))<<endl;
+      // READ SET ID
+      //FIRST LINE IS TITLE
+      cout << "SET ID: "<<readIntField(m_line[*it+2], 0, 10)<<endl;
+      
+      ls_set_node set;
+      set.id = readIntField(m_line[*it+2],0,10);
+
+      int nodecount, ncl; //Total and per line node count
+      nodecount = 0;
+      for(int i=*it+3;i< *(std::next(it));i++) {
+        if (m_line[i].size()>0) {
+          ncl = (int)(m_line[i].size()/10);
+          for (int n=0;n<ncl;n++){
+            //cout <<"ncl: "<<ncl<<endl;
+            //cout << "str "<<m_line[i]<<endl;
+            int nodeid = readIntField(m_line[i], 10*n, 10);
+            set.node.push_back(m_node_map[nodeid]);
+            cout << "id" << nodeid<<", pos "<< m_node_map[nodeid]<<endl;
+          }
+        }
+        
+        nodecount+=ncl;
+      }
+      cout << "Node set element count "<<nodecount<<endl;
+
+    }
+    it ++;
+  }
   
   
   return ret;
@@ -347,6 +384,7 @@ lsdynaReader::lsdynaReader(const char *fname){
   readSPCNodes();
   cout << "SPH node 1 pos"<<m_elem[0].node[0]/*<<", ID"<<m_node[m_elem[0].node[0]].m_id*/<<endl;
   cout << "SPH node id 1 pos w/map: " <<m_node_map[m_elem[0].node[0]]<<endl;
+  readSetNodes();
   //CHECK FOR
 // *BOUNDARY_SPC_SET
 // $#    nsid       cid      dofx      dofy      dofz     dofrx     dofry     dofrz
