@@ -330,10 +330,10 @@ bool lsdynaReader::readSetNodes(){
             }
             //cout << "id" << nodeid<<", pos "<< m_node_map[nodeid]<<endl;
           }
-        }
-        m_set_nod.push_back(set);
+        }//If linesize != 0
         nodecount+=ncl;
-      }
+      } //Loop Trough lines
+      m_set_nod.push_back(set);
       cout << "Node set element count "<<nodecount<<endl;
 
     }
