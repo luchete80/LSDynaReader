@@ -26,6 +26,7 @@ struct ls_node {
     m_x[0]=x;m_x[1]=y;m_x[2]=z;
   }
   int m_id;
+  int id_sph_el;
   double m_x[3];
 };
 

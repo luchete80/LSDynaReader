@@ -234,13 +234,16 @@ void lsdynaReader::readElementSPH() {
   int i = 0;
   findSection ("*ELEMENT_SPH", &ini_pos, &end_pos);
   cout << "Searching SPH Elements..."<<endl;
+  int el = 0;
   for (i=ini_pos;i<end_pos+1;i++){
     int id, pid;
     ls_element ls_el;
     int nodecount;
     //if (m_line[i].size()>16) nodecount = (int)((m_line[i].size()-16)/8);
     //cout << "Elem node pos "<<m_node_map[readIntField(m_line[i], 0, 8)] <<endl;
-    ls_el.node.push_back(m_node_map[readIntField(m_line[i], 0, 8)]);
+	int nodepos = m_node_map[readIntField(m_line[i], 0, 8)];
+    ls_el.node.push_back(nodepos);
+	m_node[nodepos].id_sph_el = el;
     ls_el.pid  = readIntField(m_line[i], 8, 8);
     ls_el.mass = readDoubleField(m_line[i], 16, 16);
     ls_el.m_type = _SPH_;
@@ -248,7 +251,7 @@ void lsdynaReader::readElementSPH() {
 
     // cout << "Node "<<id <<"XYZ: "<<nod.m_x[0]<<", "<<nod.m_x[1]<<", "<<nod.m_x[2]<<endl; 
     m_elem.push_back(ls_el);
-    
+    el++;
   }
 
 }  //line
