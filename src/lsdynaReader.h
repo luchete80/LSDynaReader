@@ -78,7 +78,7 @@ public:
   void readElementSolid();
   void readElementSPH();
   void readSPCNodes();
-  bool findSection(std::string str, int * ini_pos, int *end_pos);
+  bool findSection(std::string str, int * ini_pos, int *end_pos, int start_pos = 0);
   bool readBPMNodes(); //*BOUNDARY_PRESCRIBED_MOTION_NODE
   bool readSetNodes();
   std::vector < ls_node    > m_node;

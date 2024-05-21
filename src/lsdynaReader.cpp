@@ -101,7 +101,7 @@ int readIntField(string &str, const int &pos, const int &length) {
   int ret = 0.0;
     std::string f_str = str.substr(pos,length);
     f_str = removeSpaces(f_str);
-
+  //cout << "reading "<<f_str.c_str()<<endl;
   if (str.size()<pos+length) {
     cout << "ERROR TRYING TO READ: "<<str<<", subs: " <<f_str<<endl;
     return ret;
@@ -113,12 +113,12 @@ int readIntField(string &str, const int &pos, const int &length) {
   return ret;
 }
 
-bool findSection(std::vector<string> m_line, string str, int * ini_pos, int *end_pos){
+bool findSection(std::vector<string> m_line, string str, int * ini_pos, int *end_pos, int start_pos = 0){
   
   bool end = false;
   bool found = false;
   int endpos;
-  int i = 0;
+  int i = start_pos;
   cout << "Reading "<<str<<endl;
   cout << "Size "<<m_line.size()<<endl;
   while (!end){
@@ -141,11 +141,11 @@ bool findSection(std::vector<string> m_line, string str, int * ini_pos, int *end
   return found;
 }
 
-bool lsdynaReader::findSection(string str, int * ini_pos, int *end_pos){
+bool lsdynaReader::findSection(string str, int * ini_pos, int *end_pos, int start_pos){
   
   bool end = false;
   bool found = false;
-  int i = 0;
+  int i = start_pos;
   cout << "Reading "<< str << endl;
   while (!end){
 
@@ -207,7 +207,7 @@ void lsdynaReader::readElementSolid() {
       ls_el.node.push_back(readIntField(m_line[i], 16+8*d, 8));
       // cout << "Node "<<id <<"XYZ: "<<nod.m_x[0]<<", "<<nod.m_x[1]<<", "<<nod.m_x[2]<<endl; 
       m_elem.push_back(ls_el);
-    
+
   }
 
 }  //line
@@ -293,9 +293,30 @@ lsdynaReader::lsdynaReader(const char *fname){
   cout << "Line count w/o comments: "<< m_line_count << endl;
   
   readNodes();
-  readElementSolid();
-  readElementSPH();
-  readSPCNodes();
+  
+  //Search for parts 
+  bool are_pts = true;
+  int ini_pos, end_pos;
+  int start_pos=0;
+  while (are_pts){    
+    findSection ("*PART", &ini_pos, &end_pos, start_pos);  
+    start_pos = end_pos ;
+    if (ini_pos>=m_line_count)
+      are_pts = false;
+    else {
+      //cout << "part found at"<< ini_pos <<" and "<< end_pos<<endl;
+      findSection ("*", &ini_pos, &end_pos, start_pos); //Or wirh find next command
+      //cout << "next section is"<< ini_pos <<" and "<< end_pos<<endl;
+      //cout << "section name "<< m_line[ini_pos-1]<<endl;
+      if (m_line[ini_pos-1].find("ELEMENT_SOLID") != std::string::npos){
+        //cout << "Element Solid found"<<endl;
+        readElementSolid();
+      } else if (m_line[ini_pos-1].find("ELEMENT_SOLID") != std::string::npos){
+      // readElementSPH();
+      // readSPCNodes();
+      }
+    }
+  }
   //CHECK FOR
 // *BOUNDARY_SPC_SET
 // $#    nsid       cid      dofx      dofy      dofz     dofrx     dofry     dofrz
