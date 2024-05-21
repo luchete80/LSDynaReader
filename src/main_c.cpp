@@ -2,6 +2,7 @@
 #include <iostream>
 
 using namespace std;
+using namespace LS_Dyna;
 
 int main(int argc, char **argv){
   if (argc > 1){
