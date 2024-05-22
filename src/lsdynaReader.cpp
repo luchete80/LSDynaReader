@@ -212,13 +212,11 @@ void lsdynaReader::readElementSolid() {
   int ini_pos, end_pos;
   int i = 0;
   if (findSection ("*ELEMENT_SOLID", &ini_pos, &end_pos)){
-  
   for (i=ini_pos;i<end_pos+1;i++){
     int id, pid;
     ls_element ls_el;
     int nodecount;
     if (m_line[i].size()>16) nodecount = (int)((m_line[i].size()-16)/8);
-    // cout << "Elem node count "<<nodecount <<endl;
     ls_el.id  = readIntField(m_line[i], 0, 8);
     ls_el.pid = readIntField(m_line[i], 1, 8);
     
@@ -390,31 +388,32 @@ lsdynaReader::lsdynaReader(const char *fname){
     // if ()
   // }
   readNodes();
-  
+  cout << "AAAAA"<<endl;
   //Search for parts 
   bool are_pts = true;
   int ini_pos, end_pos;
   int start_pos=0;
   //TODO COMMAND SWIPE AS BELOW WITH PART
-  while (are_pts){    
-    findSection ("*PART", &ini_pos, &end_pos, start_pos);  
-    start_pos = end_pos ;
-    if (ini_pos>=m_line_count)
-      are_pts = false;
-    else {
-      //cout << "part found at"<< ini_pos <<" and "<< end_pos<<endl;
-      findSection ("*", &ini_pos, &end_pos, start_pos); //Or wirh find next command
-      //cout << "next section is"<< ini_pos <<" and "<< end_pos<<endl;
-      //cout << "section name "<< m_line[ini_pos-1]<<endl;
-      if (m_line[ini_pos-1].find("ELEMENT_SOLID") != std::string::npos){
-        //cout << "Element Solid found"<<endl;
-        readElementSolid();
-      } else if (m_line[ini_pos-1].find("ELEMENT_SOLID") != std::string::npos){
-      // readElementSPH();
-      // readSPCNodes();
-      }
+  for (int c=0;c<m_command.size();c++){
+    if (m_command[c].find("ELEMENT_SOLID")){
+      readElementSolid();
     }
   }
+
+
+      // //cout << "part found at"<< ini_pos <<" and "<< end_pos<<endl;
+      // findSection ("*", &ini_pos, &end_pos, start_pos); //Or wirh find next command
+      // //cout << "next section is"<< ini_pos <<" and "<< end_pos<<endl;
+      // //cout << "section name "<< m_line[ini_pos-1]<<endl;
+      // if (m_line[ini_pos-1].find("ELEMENT_SOLID") != std::string::npos){
+        // cout << "Element Solid found"<<endl;
+        // readElementSolid();
+      // } else if (m_line[ini_pos-1].find("ELEMENT_SPH") != std::string::npos){
+      // // readElementSPH();
+      // // readSPCNodes();
+      // }
+    // }
+  // }
   
   readSPCNodes();
   cout << "SPH node 1 pos"<<m_elem[0].node[0]/*<<", ID"<<m_node[m_elem[0].node[0]].m_id*/<<endl;
