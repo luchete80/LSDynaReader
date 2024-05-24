@@ -395,7 +395,7 @@ lsdynaReader::lsdynaReader(const char *fname){
   int start_pos=0;
   //TODO COMMAND SWIPE AS BELOW WITH PART
   for (int c=0;c<m_command.size();c++){
-    if (m_command[c].find("ELEMENT_SOLID")){
+    if (m_command[c].find("ELEMENT_SOLID")!=string::npos){
       readElementSolid();
     }
   }
