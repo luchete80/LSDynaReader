@@ -95,6 +95,8 @@ public:
   bool findSection(std::string str, int * ini_pos, int *end_pos, int start_pos = 0);
   bool readBPMNodes(); //*BOUNDARY_PRESCRIBED_MOTION_NODE
   bool readSetNodes();
+  
+  bool readContacts(); //ONLY NODE TO SURFACE
 
   int getNodePos(const int &n);
   ls_node & getElemNode(const int &e, const int &n);

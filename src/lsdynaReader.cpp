@@ -352,6 +352,19 @@ bool lsdynaReader::readSetNodes(){
   
 }
 
+bool lsdynaReader::readContacts(){
+  bool ret = true;
+  
+   for (int c=0;c<m_command.size();c++){
+    if (m_command[c].find("ELEMENT_SOLID")!=string::npos){
+      readElementSolid();
+    }
+  }
+  
+  return ret;
+  
+}
+
 void lsdynaReader::readCommands(){
   
   for (int i=0;i<m_line.size();i++){
@@ -419,6 +432,8 @@ lsdynaReader::lsdynaReader(const char *fname){
   cout << "SPH node 1 pos"<<m_elem[0].node[0]/*<<", ID"<<m_node[m_elem[0].node[0]].m_id*/<<endl;
   cout << "SPH node id 1 pos w/map: " <<m_node_map[m_elem[0].node[0]]<<endl;
   readSetNodes();
+  
+  //CONTACT
 
   //CHECK FOR
 // *BOUNDARY_SPC_SET
