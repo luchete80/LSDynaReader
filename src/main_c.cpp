@@ -12,6 +12,13 @@ int main(int argc, char **argv){
   cout << "Node    count: " << reader.m_node.size() <<endl;
   cout << "Element count: " << reader.m_elem.size() <<endl;
   cout << "BOUNDARY_SPC_NODE count: " << reader.m_spc_nod.size()<<endl;
+  
+  for(int e=0;e<reader.m_elem.size();e++){
+    for (int en=0;en<reader.m_elem[e].node.size();en++  ){
+      ls_node n = reader.getElemNode(e, en);
+      cout << "Node id "<<n.m_id<<", xyz:"<<n.m_x[0]<<", "<<n.m_x[1]<<", "<<n.m_x[2]<<endl;
+    }
+  }
   }
   //TODO: 
   //READ ALL BOUNDARY_SPC_NODE instances

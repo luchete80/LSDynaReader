@@ -413,6 +413,11 @@ lsdynaReader::lsdynaReader(const char *fname){
     }
   }
 
+  for (int c=0;c<m_command.size();c++){
+    if (m_command[c].find("ELEMENT_SPH")!=string::npos){
+      readElementSPH();
+    }
+  }
 
       // //cout << "part found at"<< ini_pos <<" and "<< end_pos<<endl;
       // findSection ("*", &ini_pos, &end_pos, start_pos); //Or wirh find next command
