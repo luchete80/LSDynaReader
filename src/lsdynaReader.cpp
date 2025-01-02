@@ -183,8 +183,8 @@ void lsdynaReader::readNodes() {
       nod.m_x[d] = readDoubleField(m_line[i], 8+16*d, 16);
     
     if (i>end_pos-2){
-      cout << "Node id"<<id <<", npos: "<<npos<<", XYZ: "<<nod.m_x[0]<<", "<<nod.m_x[1]<<", "<<nod.m_x[2]<<endl;
-      cout << "pos "<<i<<", "<<"end_pos"<<end_pos<<endl;
+      //cout << "Node id"<<id <<", npos: "<<npos<<", XYZ: "<<nod.m_x[0]<<", "<<nod.m_x[1]<<", "<<nod.m_x[2]<<endl;
+      //cout << "pos "<<i<<", "<<"end_pos"<<end_pos<<endl;
     }      
     m_node.push_back(nod);
     m_node_map.insert(pair<int, int>(id, npos));
@@ -212,13 +212,13 @@ void lsdynaReader::readElementSolid() {
   int ini_pos, end_pos;
   int i = 0;
   if (findSection ("*ELEMENT_SOLID", &ini_pos, &end_pos)){
-  cout<<"ELEMENT SOLID at "<< ini_pos<<" to "<<end_pos<<endl;
+  //cout<<"ELEMENT SOLID at "<< ini_pos<<" to "<<end_pos<<endl;
   for (i=ini_pos;i<end_pos+1;i++){
     int id, pid;
     ls_element ls_el;
     int nodecount;
     if (m_line[i].size()>16) nodecount = (int)((m_line[i].size()-16)/8);
-    cout << "Elkeemnt node count "<<nodecount<<endl;
+    //cout << "Elkeemnt node count "<<nodecount<<endl;
     ls_el.id  = readIntField(m_line[i], 0, 8);
     ls_el.pid = readIntField(m_line[i], 1, 8);
     
@@ -416,7 +416,7 @@ lsdynaReader::lsdynaReader(const char *fname){
       readElementSolid();
     }
   }
-/*
+
   for (int c=0;c<m_command.size();c++){
     if (m_command[c].find("ELEMENT_SPH")!=string::npos){
       readElementSPH();
@@ -441,7 +441,7 @@ lsdynaReader::lsdynaReader(const char *fname){
 
   cout << "SPH node id 1 pos w/map: " <<m_node_map[m_elem[0].node[0]]<<endl;
   readSetNodes();
-  */
+  
   //CONTACT
 
   //CHECK FOR
