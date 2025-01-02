@@ -212,11 +212,13 @@ void lsdynaReader::readElementSolid() {
   int ini_pos, end_pos;
   int i = 0;
   if (findSection ("*ELEMENT_SOLID", &ini_pos, &end_pos)){
+  cout<<"ELEMENT SOLID at "<< ini_pos<<" to "<<end_pos<<endl;
   for (i=ini_pos;i<end_pos+1;i++){
     int id, pid;
     ls_element ls_el;
     int nodecount;
     if (m_line[i].size()>16) nodecount = (int)((m_line[i].size()-16)/8);
+    cout << "Elkeemnt node count "<<nodecount<<endl;
     ls_el.id  = readIntField(m_line[i], 0, 8);
     ls_el.pid = readIntField(m_line[i], 1, 8);
     
@@ -396,10 +398,12 @@ lsdynaReader::lsdynaReader(const char *fname){
   
   //removeComments();
   removeComments();
+  cout << "Reading commands "<<endl;
   readCommands();
   // for (int c=0;c<m_command.size();c++){
     // if ()
   // }
+  cout << "Reading nodes "<<endl;
   readNodes();
   cout << "AAAAA"<<endl;
   //Search for parts 
@@ -412,7 +416,7 @@ lsdynaReader::lsdynaReader(const char *fname){
       readElementSolid();
     }
   }
-
+/*
   for (int c=0;c<m_command.size();c++){
     if (m_command[c].find("ELEMENT_SPH")!=string::npos){
       readElementSPH();
@@ -434,10 +438,10 @@ lsdynaReader::lsdynaReader(const char *fname){
   // }
   
   readSPCNodes();
-  cout << "SPH node 1 pos"<<m_elem[0].node[0]/*<<", ID"<<m_node[m_elem[0].node[0]].m_id*/<<endl;
+
   cout << "SPH node id 1 pos w/map: " <<m_node_map[m_elem[0].node[0]]<<endl;
   readSetNodes();
-  
+  */
   //CONTACT
 
   //CHECK FOR
