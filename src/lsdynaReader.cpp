@@ -222,10 +222,14 @@ void lsdynaReader::readElementSolid() {
     ls_el.id  = readIntField(m_line[i], 0, 8);
     ls_el.pid = readIntField(m_line[i], 1, 8);
     
-    for (int d=0;d<nodecount;d++)
-      ls_el.node.push_back(readIntField(m_line[i], 16+8*d, 8));
+    for (int d=0;d<nodecount;d++){
+      int node_id = readIntField(m_line[i], 16+8*d, 8);
+      ls_el.node.push_back(m_node_map[node_id]);
+    
+    }
       // cout << "Node "<<id <<"XYZ: "<<nod.m_x[0]<<", "<<nod.m_x[1]<<", "<<nod.m_x[2]<<endl; 
-      m_elem.push_back(ls_el);
+    
+    m_elem.push_back(ls_el);
 
   }
   }
