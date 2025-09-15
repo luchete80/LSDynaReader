@@ -222,7 +222,9 @@ void lsdynaReader::readElementSolid() {
     ls_el.id  = readIntField(m_line[i], 0, 8);
     ls_el.pid = readIntField(m_line[i], 1, 8);
     
-    if(readIntField(m_line[i], 16+8*3, 8)==readIntField(m_line[i], 16+8*4, 8))
+    if(readIntField(m_line[i], 16+8*3, 8)==readIntField(m_line[i], 16+8*4, 8)
+      || readIntField(m_line[i], 16+8*3, 8) == 0
+      || m_line[i].size() <= 48)
         nodecount= 4; //TETRA
       
     for (int d=0;d<nodecount;d++){
